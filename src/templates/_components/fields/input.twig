@@ -1,0 +1,52 @@
+{% import "_includes/forms" as forms %}
+
+<div id="mediaflow-{{ field.id }}" data-id="{{ namespace }}mediaflow">
+    <div class="mb-2">
+        <div class="mediaflow-preview element removable large hasthum">
+            {% if value ?? false %}
+                {% if value is iterable %}
+                    {% for media in value %}
+                        <div class="mediaflow-media-container">
+                            {% if media.basetype == 'video' %}
+                                <video width="200" controls poster="{{ media.poster }}">
+                                    <source src="{{ media.url }}" type="video/{{ media.filetype }}">
+                                    Your browser does not support the video tag.
+                                </video>
+                            {% else %}
+                                <img src="{{ media.url }}" width="100" alt="{{ media.altText ?? '' }}">
+                            {% endif %}
+                            
+                            <div class="mediaflow-label">
+                                <div class="label"><span class="title">{{ media.name }}</span></div>
+                                <a class="delete icon mediaflow-remove" title="Remove" data-media-code="{{ media.id }}"></a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="mediaflow-media-container">
+                        {% if value.basetype == 'video' %}
+                            <video width="200" controls poster="{{ value.poster }}">
+                                <source src="{{ value.url }}" type="video/{{ value.filetype }}">
+                                Your browser does not support the video tag.
+                            </video>
+                        {% else %}
+                            <img src="{{ value.url }}" width="100" alt="{{ value.altText ?? '' }}">
+                        {% endif %}
+                        
+                        <div class="mediaflow-label">
+                            <div class="label"><span class="title">{{ value.name }}</span></div>
+                            <a class="delete icon mediaflow-remove" title="Remove" data-media-code="{{ value.id }}"></a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+    <button type="button" class="mediaflow-trigger add icon dashed btn">{{ 'buttonText'|t('mediaflow') }}</button>
+    {{ forms.hidden({
+        id: id ~ namespace,
+        name: name,
+        value: value ? ((value is iterable ? value[0].json : value.json ?? null) | json_encode) : null,
+    })|attr({class: 'mediaflow-value'}) }}
+</div>

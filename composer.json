@@ -1,0 +1,50 @@
+{
+  "name": "99x/craft-mediaflow",
+  "description": "A Mediaflow integration plugin for CraftCMS",
+  "type": "craft-plugin",
+  "license": "proprietary",
+  "support": {
+    "email": "alexandre.monteiro@99x.no"
+  },
+  "require": {
+    "php": ">=8.2",
+    "craftcms/cms": "^5.6.11"
+  },
+  "require-dev": {
+    "craftcms/ecs": "dev-main",
+    "craftcms/phpstan": "dev-main",
+    "friendsofphp/php-cs-fixer": "^3.20",
+    "symplify/easy-coding-standard": "^10.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "_99x\\craftmediaflow\\": "src/"
+    }
+  },
+  "extra": {
+    "handle": "mediaflow",
+    "name": "Mediaflow",
+    "developer": "99x",
+    "documentationUrl": "",
+    "class": "_99x\\craftmediaflow\\Mediaflow"
+  },
+  "scripts": {
+    "check-cs": "ecs check --ansi",
+    "fix-cs": "ecs check --ansi --fix",
+    "phpstan": "phpstan --memory-limit=1G",
+    "test": [
+      "@check-cs",
+      "@phpstan"
+    ]
+  },
+  "config": {
+    "sort-packages": true,
+    "platform": {
+      "php": "8.2"
+    },
+    "allow-plugins": {
+      "yiisoft/yii2-composer": true,
+      "craftcms/plugin-installer": true
+    }
+  }
+}

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="sv">
+
+<head>
+    <meta charset="utf-8">
+    <title>Mediaflow fileselector</title>
+    <link href="https://mfstatic.com/css/fileselector.css" type="text/css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="selectorHolder"
+        style="position:relative;width:1000px;height:500px;overflow:hidden;border:0px solid black;margin:0px;"></div>
+    <script src="https://mfstatic.com/js/fileselector.min.js"></script>
+    <script>
+        var myFileSelector = new FileSelector('selectorHolder', { /* enter DOM element or id */
+            auth: 'token',
+            client_id: '{{ client_id }}',
+            client_secret: '{{ client_secret }}',
+            refresh_token: '{{ refresh_token }}',
+            success: function (o) { /* callback when a file is selected */
+                window.opener.postMessage({...{ action: "updatePreview" }, ...o}, "*");
+            }
+        });
+    </script>
+</body>
+
+</html>

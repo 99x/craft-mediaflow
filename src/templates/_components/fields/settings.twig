@@ -1,0 +1,78 @@
+{% import "_includes/forms" as forms %}
+
+{% set locales = [
+  {
+    label: 'English'|t,
+    value: 'en_US'
+  },
+  {
+    label: 'Swedish'|t,
+    value: 'sv_SE'
+  }
+] %}
+
+{{ forms.selectField({
+    label: 'UI-language'|t,
+    id: 'locale',
+    name: 'locale',
+    options: locales,
+    value: field['locale']})
+}}
+
+{{ forms.textField({
+    label: 'Limit File Type'|t,
+    instructions: 'If you want to restrict which files you can view (comma separated list with file type or file extension'|t,
+    name: 'limitFileType',
+    value: field['limitFileType']
+}) }}
+
+{{ forms.lightswitchField({
+    label: 'No Crop Button'|t,
+    instructions: 'If the user should be able to crop the image'|t,
+    id: 'noCropButton',
+    name: 'noCropButton',
+    on: field['noCropButton'] ? 1 : 0
+}) }}
+
+{{ forms.lightswitchField({
+    label: 'Allow Select Format'|t,
+    instructions: 'If the user should be able to select the crop format'|t,
+    id: 'allowSelectFormat',
+    name: 'allowSelectFormat',
+    on: field['allowSelectFormat'] ? 1 : 0
+}) }}
+
+{{ forms.lightswitchField({
+    label: 'Set Alt Text'|t,
+    instructions: 'If the alt text can be specified'|t,
+    id: 'setAltText',
+    name: 'setAltText',
+    on: field['setAltText'] ? 1 : 0
+}) }}
+
+{{ forms.lightswitchField({
+    label: 'Permanent URL'|t,
+    instructions: 'Whether the download url should be temporary or permanent. Default is false.'|t,
+    id: 'permanentURL',
+    name: 'permanentURL',
+    on: field['permanentURL'] ? 1 : 0
+}) }}
+
+{{ forms.lightswitchField({
+    label: 'Allow Iframe Video'|t,
+    instructions: 'If the user should be able to embed a video in an iframe'|t,
+    id: 'allowIframeVideo',
+    name: 'allowIframeVideo',
+    on: field['allowIframeVideo'] ? 1 : 0
+}) }}
+
+{{ forms.lightswitchField({
+    label: 'Allow JS Video'|t,
+    instructions: 'If the user should be able to embed a video in an iframe'|t,
+    id: 'allowJSVideo',
+    name: 'allowJSVideo',
+    on: field['allowJSVideo'] ? 1 : 0
+}) }}
+
+
+

@@ -1,0 +1,50 @@
+{% import '_includes/forms.twig' as forms %}
+
+{{ forms.autosuggestField({
+    label: 'Client ID'|t,
+    instructions: 'Mediaflow client ID',
+    id: 'clientId',
+    name: 'clientId',
+    suggestEnvVars: true,
+    required: true,
+    value: settings['clientId']})
+}}
+
+{{ forms.autosuggestField({
+    label: 'Client Secret'|t,
+    instructions: 'Mediaflow client secret',
+    id: 'clientSecret',
+    name: 'clientSecret',
+    suggestEnvVars: true,
+    required: true,
+    value: settings['clientSecret']})
+}}
+
+{{ forms.autosuggestField({
+    label: 'Refresh Token'|t,
+    instructions: 'Mediaflow refresh token',
+    id: 'refreshToken',
+    name: 'refreshToken',
+    suggestEnvVars: true,
+    required: true,
+    value: settings['refreshToken']})
+}}
+
+{% set languages = [
+  {
+    label: 'Norwegian'|t,
+    value: 'nb-NO'
+  }, {
+    label: 'English'|t,
+    value: 'en-US'
+  }
+] %}
+
+{{ forms.selectField({
+    label: 'Language'|t,
+    id: 'language',
+    name: 'language',
+    options: languages,
+    value: settings['language']})
+}}
+
