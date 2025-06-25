@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="sv">
+
+<head>
+    <meta charset="utf-8">
+    <title>Mediaflow fileselector</title>
+    <link href="https://mfstatic.com/css/fileselector.css" type="text/css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="selectorHolder"
+        style="position:relative;width:1000px;height:580px;overflow:hidden;border:0px solid black;margin:0px;"></div>
+    <script src="https://mfstatic.com/js/fileselector.min.js"></script>
+    <script>
+        var myFileSelector = new FileSelector('selectorHolder', { /* enter DOM element or id */
+            auth: 'token',
+            client_id: '{{ client_id }}',
+            client_secret: '{{ client_secret }}',
+            refresh_token: '{{ refresh_token }}',
+            locale: '{{ locale|default('en_US') }}', /* UI-language, sv_SE or en_US */
+            limitFileType: 'jpg,jpeg,tif,tiff,png,gif,bmp,ico,webp,svg',
+            allowSelectFormat: false,
+            downloadFormat: 'original',
+            success: function (o) { /* callback when a file is selected */
+                // Extract fieldId from the query string
+                function getFieldIdFromQueryString() {
+                    var params = new URLSearchParams(window.location.search);
+                    return params.get('fieldId');
+                }
+                window.opener.postMessage(
+                    { ...{ action: "updatePreview", fieldId: getFieldIdFromQueryString() }, ...o },
+                    "*"
+                );
+            }
+        });
+    </script>
+</body>
+
+</html>

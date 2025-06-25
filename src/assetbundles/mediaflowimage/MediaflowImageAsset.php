@@ -1,29 +1,29 @@
 <?php
 
-namespace _99x\craftmediaflow\assetbundles\mediaflow;
+namespace _99x\craftmediaflow\assetbundles\mediaflowimage;
 
 use craft\web\AssetBundle;
 use craft\web\assets\cp\CpAsset;
 
-class MediaflowAsset extends AssetBundle
+class MediaflowImageAsset extends AssetBundle
 {
     /**
      * @inheritdoc
      */
     public function init()
     {
-        $this->sourcePath = "@_99x/craftmediaflow/assets/mediaflow";
+        $this->sourcePath = "@_99x/craftmediaflow/assets/mediaflowimage";
 
         $this->depends = [
             CpAsset::class,
         ];
 
         $this->js = [
-            'js/Mediaflow.js',
+            'js/MediaflowImageField.js',
         ];
 
         $this->css = [
-            'css/Mediaflow.css',
+            'css/MediaflowImageField.css',
         ];
 
         parent::init();

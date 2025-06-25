@@ -1,0 +1,53 @@
+{% import "_includes/forms" as forms %}
+
+{# Extract the volumeId for the button #}
+{% set volumeId = '' %}
+{% if field.defaultUploadLocationSource and field.defaultUploadLocationSource|slice(0, 7) == 'volume:' %}
+    {% set volumeUid = field.defaultUploadLocationSource|slice(7) %}
+    {% set volume = craft.app.volumes.getVolumeByUid(volumeUid) %}
+    {% if volume %}
+        {% set volumeId = volume.id %}
+    {% endif %}
+{% endif %}
+
+<div id="fields-{{ id }}" class="elementselect" data-type="{{ field.className }}">
+    <ul class="elements chips chips-small">
+        {# Render selected assets #}
+        {% if value is iterable %}
+            {% for asset in value %}
+                <li class="chip small element removable" data-id="{{ asset.id }}">
+                    <div class="thumb">
+                        <img src="{{ asset.url }}" alt="{{ asset.title }}">
+                    </div>
+                    <div class="chip-content">
+                        <span class="label">{{ asset.title }}</span>
+                        <button type="button" class="delete icon" title="Remove" aria-label="Remove"></button>
+                    </div>
+                    <input type="hidden" name="{{ name }}[]" value="{{ asset.id }}">
+                </li>
+            {% endfor %}
+        {% endif %}
+    </ul>
+    <div class="flex mt-2">
+        <button type="button" class="btn add icon dashed" aria-label="Add an asset">{{ 'Add an asset'|t('app') }}</button>
+        <button type="button" class="btn dashed" data-icon="upload" aria-label="Upload files">{{ 'Upload files'|t('app') }}</button>
+        <button type="button"
+            class="btn submit mediaflow-image-select ml-2"
+            data-field-id="{{ field.id }}"
+            data-field-handle="{{ field.handle }}"
+            data-entry-url="{{ element ? element.getUrl() : '' }}"
+            data-entry-title="{{ element ? element.title : '' }}"
+            data-popup-url="{{ popupUrl }}"
+            data-volume-id="{{ volumeId }}"
+            data-folder-path="{{ field.defaultUploadLocationSubpath ?? '' }}"
+            data-max-relations="{{ field.maxRelations }}">
+            {{ 'selectFromMediaflow'|t('mediaflow') }}
+        </button>
+        <input type="file" class="hidden" multiple="multiple">
+    </div>
+    <div class="spinner hidden"></div>
+    <div class="progress-shade">
+        <div class="progressbar hidden pending"><div class="progressbar-inner" style="width: 100%;"></div></div>
+        <div class="progressbar-status hidden"></div>
+    </div>
+</div> 

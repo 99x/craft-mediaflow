@@ -6,18 +6,14 @@
     value: 'en_US'
   },
   {
+    label: 'Norwegian'|t,
+    value: 'nb-NO'
+  },
+  {
     label: 'Swedish'|t,
     value: 'sv_SE'
   }
 ] %}
-
-{{ forms.selectField({
-    label: 'UI-language'|t,
-    id: 'locale',
-    name: 'locale',
-    options: locales,
-    value: field['locale']})
-}}
 
 {{ forms.textField({
     label: 'Limit File Type'|t,

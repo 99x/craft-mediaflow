@@ -9,23 +9,8 @@ use craft\base\Model;
  */
 class Settings extends Model
 {
-    /**
-     * @var string
-     */
-    public string $clientId = '';
-
-    /**
-     * @var string
-     */
-    public string $clientSecret = '';
-
-    /**
-     * @var string
-     */
-    public string $refreshToken = '';
-
-    /**
-     * @var string
-     */
-    public string $language = 'no';
+    public ?string $clientId = null;
+    public ?string $clientSecret = null;
+    public ?string $refreshToken = null;
+    public ?string $language = null;
 }

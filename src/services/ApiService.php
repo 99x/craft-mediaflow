@@ -35,6 +35,21 @@ class ApiService extends Component
     }
 
     /**
+     * Ping usage
+     *
+     * @param int|string $mediaflowId The Mediaflow file ID
+     * @param array $usageData The usage data to send (contact, project, date, amount, description, types, web, etc.)
+     * @return mixed
+     * @see https://documenter.getpostman.com/view/18665635/UVJiiEhx#61431370-99fa-4ae0-9aaf-6c8bd91239e0
+     */
+    public function pingUsage($mediaflowId, array $usageData)
+    {
+        return $this->request('POST', "/1/file/{$mediaflowId}/usage", [
+            'json' => $usageData,
+        ]);
+    }
+
+    /**
      * Get a temporary access token using authorization code
      */
     private function accessToken()
@@ -55,7 +70,9 @@ class ApiService extends Component
                 'grant_type' => 'refresh_token',
                 'client_id' => App::parseEnv($this->settings->clientId),
                 'refresh_token' => App::parseEnv($this->settings->refreshToken),
-                'redirect_uri' => Craft::$app->request->getAbsoluteUrl(),
+                'redirect_uri' => Craft::$app->request instanceof \craft\web\Request
+                    ? Craft::$app->request->getAbsoluteUrl()
+                    : '/',
             ],
         ]);
 
@@ -96,12 +113,36 @@ class ApiService extends Component
             ],
         ]);
 
-        $response = $client->request($method, $action, $params);
+        // Log the request
+        $this->pluginLog("API Request: $method $action | Params: " . json_encode($params));
 
-        if ($response->getStatusCode() == 200 && $response->hasHeader('Content-Length')) {
-            return $response->getBody()->getContents();
+        try {
+            $response = $client->request($method, $action, $params);
+            $body = $response->getBody()->getContents();
+            $this->pluginLog("API Response: $method $action | Status: " . $response->getStatusCode() . " | Body: $body");
+
+            if ($response->getStatusCode() == 200 && $response->hasHeader('Content-Length')) {
+                return $body;
+            }
+        } catch (\Exception $e) {
+            $this->pluginLog("API Error: $method $action | Exception: " . $e->getMessage(), 'error');
+            throw $e;
         }
 
         return null;
+    }
+
+    /**
+     * Log a message to the plugin-specific log file
+     *
+     * @param string $message
+     * @param string $level (info, error, etc.)
+     */
+    private function pluginLog(string $message, string $level = 'info')
+    {
+        $logFile = Craft::getAlias('@storage/logs/mediaflow-image.log');
+        $date = date('Y-m-d H:i:s');
+        $entry = "[$date] [$level] $message\n";
+        file_put_contents($logFile, $entry, FILE_APPEND);
     }
 }

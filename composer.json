@@ -4,11 +4,15 @@
   "type": "craft-plugin",
   "license": "proprietary",
   "support": {
-    "email": "alexandre.monteiro@99x.no"
+    "email": "alexandre.monteiro@99x.no",
+    "issues": "https://github.com/99x/craft-mediaflow/issues?state=open",
+    "source": "https://github.com/99x/craft-mediaflow",
+    "docs": "https://github.com/99x/craft-mediaflow",
+    "rss": "https://github.com/99x/craft-mediaflow/releases.atom"
   },
   "require": {
     "php": ">=8.2",
-    "craftcms/cms": "^5.6.11"
+    "craftcms/cms": "^5.7.0"
   },
   "require-dev": {
     "craftcms/ecs": "dev-main",
@@ -25,7 +29,7 @@
     "handle": "mediaflow",
     "name": "Mediaflow",
     "developer": "99x",
-    "documentationUrl": "",
+    "documentationUrl": "https://github.com/99x/craft-mediaflow",
     "class": "_99x\\craftmediaflow\\Mediaflow"
   },
   "scripts": {

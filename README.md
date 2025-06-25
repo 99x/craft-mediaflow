@@ -6,7 +6,7 @@ A Mediaflow integration plugin for CraftCMS
 
 ## Requirements
 
-This plugin requires Craft CMS 5.6.0 or later, and PHP 8.2 or later.
+This plugin requires Craft CMS 5.7.0 or later, and PHP 8.2 or later.
 
 ## Installation
 
@@ -22,7 +22,7 @@ Open your terminal and run the following commands:
 
 ```bash
 # go to the project directory
-cd /path/to/my-project.test
+cd /path/to/my-project
 
 # tell Composer to load the plugin
 composer require 99x/craft-mediaflow

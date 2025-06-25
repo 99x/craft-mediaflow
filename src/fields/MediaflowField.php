@@ -68,7 +68,7 @@ class MediaflowField extends Field
     {
         // Render the settings template
         return Craft::$app->getView()->renderTemplate(
-            'mediaflow/_components/fields/settings',
+            'mediaflow/_components/fields/mediaflow-field/settings',
             [
                 'field' => $this,
             ]
@@ -121,6 +121,7 @@ class MediaflowField extends Field
     protected function inputHtml(mixed $value, ?ElementInterface $element, bool $inline): string
     {
         $settings = Mediaflow::$plugin->getSettings();
+        $locale = $settings->language ?? 'en_US';
 
         // Register our asset bundle
         Craft::$app->getView()->registerAssetBundle(MediaflowAsset::class);
@@ -130,13 +131,13 @@ class MediaflowField extends Field
         $namespacedId = Craft::$app->getView()->namespaceInputId($id);
 
         $popupHtml = Craft::$app->getView()->renderTemplate(
-            'mediaflow/_components/popups/default',
+            'mediaflow/_components/popups/mediaflow-field/default',
             [
                 'client_id' => App::parseEnv($settings->clientId),
                 'client_secret' => App::parseEnv($settings->clientSecret),
                 'refresh_token' => App::parseEnv($settings->refreshToken),
                 'namespace' => $namespacedId,
-                'locale' => $this->locale,
+                'locale' => $locale,
                 'limitFileType' => $this->limitFileType,
                 'noCropButton' => $this->noCropButton,
                 'allowSelectFormat' => $this->allowSelectFormat,
@@ -160,7 +161,7 @@ class MediaflowField extends Field
 
         // Render the input template
         return Craft::$app->getView()->renderTemplate(
-            'mediaflow/_components/fields/input',
+            'mediaflow/_components/fields/mediaflow-field/input',
             [
                 'name' => $this->handle,
                 'id' => $id,
