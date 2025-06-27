@@ -2,13 +2,16 @@ class MediaflowImageField {
     static instances = {};
     static messageHandlerRegistered = false;
 
-    constructor(fieldId, fieldHandle, createAssetUrl) {
-        console.log('MediaflowImageField initialized', fieldId, fieldHandle, createAssetUrl); // DEBUG
+    constructor(fieldId, fieldHandle, createAssetUrl, viewDeltaName) {
+        // console.log('MediaflowImageField initialized', fieldId, fieldHandle, viewDeltaName); // DEBUG
         this.fieldId = fieldId;
         this.fieldHandle = fieldHandle;
         this.createAssetUrl = createAssetUrl;
+        this.inputHiddenName = viewDeltaName;
         this.popupWindow = null;
         this.activeButton = null;
+
+        this.fieldId = this.inputHiddenName;
 
         // Register this instance
         MediaflowImageField.instances[this.fieldId] = this;
@@ -23,10 +26,16 @@ class MediaflowImageField {
     }
 
     init() {
-        const buttons = document.querySelectorAll(`.mediaflow-image-select[data-field-id="${this.fieldId}"]`);
+        const buttons = document.querySelectorAll(`.mediaflow-image-select[data-field-handle="${this.fieldHandle}"]`);
+
+        if (buttons.length === 0) {
+            console.error('No buttons found for field', this.fieldId);
+            return;
+        }
+
         buttons.forEach(button => {
             button.addEventListener('click', this.handleButtonClick.bind(this));
-            console.log('MediaflowImageField event listener added for', this.fieldId); // DEBUG
+            // console.log('MediaflowImageField event listener added for', this.fieldId); // DEBUG
         });
     }
 
@@ -162,29 +171,9 @@ class MediaflowImageField {
             return;
         }
 
-        // Always clone the input name from an existing hidden input in this .elements container, if present
-        let existingInput = elementsContainer.querySelector('input[type="hidden"][name^="fields["]');
-        let inputName = existingInput
-            ? existingInput.name
-            : `fields[${this.fieldHandle}][]`;
+        // Always use the provided inputHiddenName for the hidden input name
+        const inputName = this.inputHiddenName + '[]';
 
-        const maxRelations = this.activeButton.dataset.maxRelations || null;
-        const isSingle = maxRelations === '1';
-
-        // For single-select, clear only this field's container
-        if (isSingle) {
-            window.$(elementsContainer).empty();
-        }
-
-        // Remove all empty hidden inputs for this asset field in this container (robust clean-up)
-        window.$(elementsContainer).find('input[type="hidden"]').filter(function () {
-            return (
-                (this.name === inputName || this.name === inputName + '[]') &&
-                !this.value
-            );
-        }).remove();
-
-        // Always set the value for the hidden input!
         const newAssetLi = window.$('<li/>').append(
             window.$('<div/>', {
                 'id': 'fields-chip-' + assetId,
@@ -262,6 +251,13 @@ class MediaflowImageField {
         // Add the new asset to the list
         window.$(elementsContainer).append(newAssetLi);
 
+        // Update Craft's ElementSelectInput instance if present
+        const $elementsContainer = window.$(elementsContainer);
+        const elementSelectInput = $elementsContainer.data('elementSelect');
+        if (elementSelectInput) {
+            elementSelectInput.resetElements();
+        }
+
         // Add delete button functionality
         newAssetLi.find('.delete').on('click', function (e) {
             e.preventDefault();
@@ -276,6 +272,8 @@ class MediaflowImageField {
         // Trigger change event on the new hidden input
         const hiddenInput = newAssetLi.find('input[type="hidden"]')[0];
         if (hiddenInput) {
+            console.log('Change hiddenInput');
+            console.log(hiddenInput);
             hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
         }
 
@@ -290,47 +288,47 @@ class MediaflowImageField {
 // Global clean-up: Remove all empty asset field hidden inputs before submitting any form
 // This ensures no empty asset field inputs are submitted, even if rendered by Craft
 
-document.addEventListener('submit', function (e) {
-    document.querySelectorAll('input[type="hidden"][name^="fields["]').forEach(function (input) {
-        if (!input.value) {
-            input.parentNode.removeChild(input);
-        }
-    });
-}, true);
+// document.addEventListener('submit', function (e) {
+//     document.querySelectorAll('input[type="hidden"][name^="fields["]').forEach(function (input) {
+//         if (!input.value) {
+//             input.parentNode.removeChild(input);
+//         }
+//     });
+// }, true);
 
 // Global force: On submit, reconstruct all asset field hidden inputs based on visible chips
 // This ensures the correct asset IDs are always submitted for every field
 
-document.addEventListener('submit', function (e) {
-    document.querySelectorAll('.field').forEach(function (fieldContainer) {
-        const elementsContainer = fieldContainer.querySelector('.elements');
-        if (!elementsContainer) return;
+// document.addEventListener('submit', function (e) {
+//     document.querySelectorAll('.field').forEach(function (fieldContainer) {
+//         const elementsContainer = fieldContainer.querySelector('.elements');
+//         if (!elementsContainer) return;
 
-        // Get all asset chips in this field
-        const chips = elementsContainer.querySelectorAll('.chip[data-id]');
-        // Remove all hidden inputs for this field
-        elementsContainer.querySelectorAll('input[type="hidden"][name^="fields["]').forEach(function (input) {
-            input.parentNode.removeChild(input);
-        });
+//         // Get all asset chips in this field
+//         const chips = elementsContainer.querySelectorAll('.chip[data-id]');
+//         // Remove all hidden inputs for this field
+//         elementsContainer.querySelectorAll('input[type="hidden"][name^="fields["]').forEach(function (input) {
+//             input.parentNode.removeChild(input);
+//         });
 
-        // For each chip, add a hidden input with the correct name and value
-        chips.forEach(function (chip) {
-            const assetId = chip.getAttribute('data-id');
-            if (!assetId) return;
-            // Try to get the input name from a data attribute or fallback to the field handle
-            let inputName = fieldContainer.querySelector('input[type="hidden"][name^="fields["]')?.name;
-            if (!inputName) {
-                // Fallback: try to get the field handle from the chip or field container
-                const fieldHandle = chip.closest('.field')?.querySelector('.mediaflow-image-select')?.dataset.fieldHandle;
-                const isSingle = chip.closest('.field')?.querySelector('.mediaflow-image-select')?.dataset.maxRelations === '1';
-                inputName = isSingle ? `fields[${fieldHandle}]` : `fields[${fieldHandle}][]`;
-            }
-            // Add the hidden input
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = inputName;
-            input.value = assetId;
-            elementsContainer.appendChild(input);
-        });
-    });
-}, true); 
+//         // For each chip, add a hidden input with the correct name and value
+//         chips.forEach(function (chip) {
+//             const assetId = chip.getAttribute('data-id');
+//             if (!assetId) return;
+//             // Try to get the input name from a data attribute or fallback to the field handle
+//             let inputName = fieldContainer.querySelector('input[type="hidden"][name^="fields["]')?.name;
+//             if (!inputName) {
+//                 // Fallback: try to get the field handle from the chip or field container
+//                 const fieldHandle = chip.closest('.field')?.querySelector('.mediaflow-image-select')?.dataset.fieldHandle;
+//                 const isSingle = chip.closest('.field')?.querySelector('.mediaflow-image-select')?.dataset.maxRelations === '1';
+//                 inputName = isSingle ? `fields[${fieldHandle}]` : `fields[${fieldHandle}][]`;
+//             }
+//             // Add the hidden input
+//             const input = document.createElement('input');
+//             input.type = 'hidden';
+//             input.name = inputName;
+//             input.value = assetId;
+//             elementsContainer.appendChild(input);
+//         });
+//     });
+// }, true); 

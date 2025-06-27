@@ -56,8 +56,12 @@ class MediaflowImageField extends Assets
                 $volumeId = $volume->id;
             }
         }
+
+        $deltaName = $view->namespace . '[' . $this->handle . ']';
+
         $buttonData = [
             'fieldId' => $this->id,
+            'deltaName' => $deltaName,
             'fieldHandle' => $this->handle,
             'entryUrl' => $element ? $element->getUrl() : '',
             'entryTitle' => $element ? $element->title : '',
@@ -69,18 +73,29 @@ class MediaflowImageField extends Assets
         ];
         $jsonButtonData = json_encode($buttonData);
 
-        // Use the field's ID for robust selection and sync visibility with 'Add an asset' button
+        // Use a more robust selector to find the flex containers for this field handle
         $js = <<<JS
+        // var deltaName = $deltaName;
 (function() {
+    
     var data = $jsonButtonData;
-    var flexDivs = document.querySelectorAll('#fields-{$this->handle} .flex');
+    var done = false;
+
+    // Find all .flex containers inside any element whose ID contains 'fields-' + fieldHandle
+    var flexDivs = Array.from(document.querySelectorAll('div[id*="fields-' + data.fieldHandle + '"] .flex'));
     flexDivs.forEach(function(flexDiv) {
         if (!flexDiv.querySelector('.mediaflow-image-select')) {
+            
+            if (done) {
+                return;
+            }
+
             var btn = document.createElement('button');
             btn.type = 'button';
             btn.className = 'btn submit mediaflow-image-select ml-2';
             btn.textContent = data.buttonLabel;
             btn.setAttribute('data-field-id', data.fieldId);
+            btn.setAttribute('data-delta-name', 'fields[' + data.deltaName + ']');
             btn.setAttribute('data-field-handle', data.fieldHandle);
             btn.setAttribute('data-entry-url', data.entryUrl);
             btn.setAttribute('data-entry-title', data.entryTitle);
@@ -101,15 +116,19 @@ class MediaflowImageField extends Assets
                 });
                 observer.observe(addBtn, { attributes: true, attributeFilter: ['style', 'class'] });
             }
+            done = true;
         }
+        
     });
 })();
 JS;
         $view->registerJs($js, $view::POS_END);
 
+
+
         // Also register the MediaflowImageField JS for popup handling
         $view->registerJs(
-            "new MediaflowImageField('{$this->id}', '{$this->handle}', '{$this->getCreateAssetUrl()}');",
+            "new MediaflowImageField('{$this->id}', '{$this->handle}', '{$this->getCreateAssetUrl()}', '{$deltaName}');",
             $view::POS_END
         );
 
