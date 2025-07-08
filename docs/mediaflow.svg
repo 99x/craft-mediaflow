@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="485 67 91 91" width="91" height="91">
+  <defs/>
+  <g id="Canvas_1" stroke-opacity="1" stroke-dasharray="none" stroke="none" fill-opacity="1" fill="none">
+    <title>Canvas 1</title>
+    <g id="Canvas_1_Layer_1">
+      <title>Layer 1</title>
+      <g id="Group_9">
+        <g id="Graphic_15">
+          <circle cx="530.80004" cy="112.80004" r="43.800091888138" stroke="#c49fd5" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.4"/>
+        </g>
+        <g id="Group_10">
+          <g id="Line_14">
+            <path d="M 502.00004 123.20004 L 519.00004 97.00004 L 534.40004 118.80004" stroke="#c49fd5" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.4"/>
+          </g>
+          <g id="Line_13">
+            <path d="M 521.50004 123.20004 L 535.20004 102.60004 L 546.80004 119.90004" stroke="#c49fd5" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.4"/>
+          </g>
+          <g id="Graphic_12">
+            <circle cx="552.50004" cy="115.60004" r="7.10001489510913" stroke="#c49fd5" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.4"/>
+          </g>
+          <g id="Line_11">
+            <line x1="541.70004" y1="123.20004" x2="545.50004" y2="114.50004" stroke="#c49fd5" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.4"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

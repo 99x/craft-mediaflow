@@ -1,4 +1,30 @@
-<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-  <rect width="100" height="100" fill="white"/>
-  <path d="M 20 80 L 50 20 L 70 80 L 50 60 L 20 80 Z" stroke="#000" stroke-width="4" fill="none"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="389 275 89 89" width="89" height="89">
+  <defs/>
+  <g id="Canvas_1" stroke-opacity="1" stroke-dasharray="none" stroke="none" fill-opacity="1" fill="none">
+    <title>Canvas 1</title>
+    <g id="Canvas_1_Layer_1">
+      <title>Layer 1</title>
+      <g id="Group_2">
+        <g id="Graphic_8">
+          <circle cx="433.3242" cy="319.7617" r="43.800091888138" fill="#c49fd5"/>
+        </g>
+        <g id="Group_3">
+          <g id="Line_7">
+            <path d="M 404.6242 330.1617 L 421.6242 303.96172 L 436.9242 325.7617" stroke="white" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.4"/>
+          </g>
+          <g id="Line_6">
+            <path d="M 424.1242 330.1617 L 437.8242 309.56172 L 449.4242 326.8617" stroke="white" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.4"/>
+          </g>
+          <g id="Graphic_5">
+            <circle cx="455.0242" cy="322.5617" r="7.10001489510915" stroke="white" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.4"/>
+          </g>
+          <g id="Line_4">
+            <line x1="444.3242" y1="330.1617" x2="448.1242" y2="321.4617" stroke="white" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.4"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
 </svg>

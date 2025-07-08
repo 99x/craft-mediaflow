@@ -2,7 +2,7 @@
 
 A Mediaflow integration plugin for CraftCMS
 
- ![Screenshot](./docs/example-image-picker.avif)
+ ![Screenshot](./docs/example-image-picker.png)
 
 ## Requirements
 
